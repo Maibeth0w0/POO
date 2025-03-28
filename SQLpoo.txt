@@ -1,0 +1,56 @@
+CREATE TABLE Persona (
+    id INT PRIMARY KEY,
+    nombres VARCHAR(100) NOT NULL,
+    apellidos VARCHAR(100) NOT NULL,
+    email VARCHAR(150) UNIQUE NOT NULL
+);
+
+
+CREATE TABLE Facultad (
+    id INT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    decano_id INT,
+    FOREIGN KEY (decano_id) REFERENCES Persona(id)
+);
+
+CREATE TABLE Programa (
+    id INT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    duracion DOUBLE NOT NULL,
+    registro VARCHAR(50) UNIQUE NOT NULL,
+    facultad_id INT NOT NULL,
+    FOREIGN KEY (facultad_id) REFERENCES Facultad(id) ON DELETE CASCADE
+);
+
+CREATE TABLE Curso (
+  id INT PRIMARY KEY,
+  nombre VARCHAR(100) NOT NULL,
+  programa_id INT,
+  activo BOOLEAN,
+  FOREIGN KEY (programa_id) REFERENCES Programa(id)
+);
+CREATE TABLE Estudiante (
+    codigo INT PRIMARY KEY,
+    id_persona INT NOT NULL, 
+    programa_id INT NOT NULL,
+    activo BOOLEAN NOT NULL,
+    promedio DOUBLE NOT NULL,
+    FOREIGN KEY (id_persona) REFERENCES Persona(id) ON DELETE CASCADE,
+    FOREIGN KEY (programa_id) REFERENCES Programa(id) ON DELETE CASCADE
+);
+CREATE TABLE Inscripcion (
+    id_curso INT NOT NULL,
+    codigo_estudiante INT NOT NULL,
+    anno INT NOT NULL,
+    semestre INT NOT NULL,
+    PRIMARY KEY (id_curso),
+    FOREIGN KEY (id_curso) REFERENCES Curso(id) ON DELETE CASCADE,
+    FOREIGN KEY (codigo_estudiante) REFERENCES Estudiante(codigo) ON DELETE CASCADE
+);
+
+CREATE TABLE Profesor (
+    id INT PRIMARY KEY,
+    persona_id INT UNIQUE NOT NULL,
+    tipoContrato VARCHAR(50) NOT NULL,
+    FOREIGN KEY (persona_id) REFERENCES Persona(id) ON DELETE CASCADE
+);
