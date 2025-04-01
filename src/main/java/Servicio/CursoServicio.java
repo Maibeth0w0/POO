@@ -5,15 +5,18 @@ import DataAccessObject.ProgramaDao;
 import modelos.Curso;
 import modelos.Programa;
 import java.util.List;
+import Fabrica.CursoFabrica;
 
 public class CursoServicio {
 
     private final CursoDao cursoDao;
     private final ProgramaDao programaDao;
+    private final CursoFabrica cursoFabrica;
 
     public CursoServicio() {
         this.cursoDao = new CursoDao();
         this.programaDao = new ProgramaDao();
+        this.cursoFabrica = new CursoFabrica();
     }
 
     public boolean crearCurso(Integer id, String nombre, Integer idPrograma, Boolean activo) {
@@ -24,8 +27,8 @@ public class CursoServicio {
             System.out.println("Programa no existe");
             return false;
         }
-        
-        Curso curso = new Curso(id, nombre, programa, activo);
+        Curso curso = cursoFabrica.crearCurso(id, nombre, programa, activo);
+        //Curso curso = new Curso(id, nombre, programa, activo);
         return cursoDao.crearCurso(curso);
     }
 

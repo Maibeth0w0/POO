@@ -15,7 +15,7 @@ public class PersonaDao implements Repositorio<Persona> {
         try (Connection con = Conexion.getInstance().getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
-            ps.setInt(1, persona.getId());  // ✅ Corregido: Usa setInt para IDs enteros
+            ps.setInt(1, persona.getId());
             ps.setString(2, persona.getNombres());
             ps.setString(3, persona.getApellidos());
             ps.setString(4, persona.getEmail());
@@ -28,16 +28,16 @@ public class PersonaDao implements Repositorio<Persona> {
     }
 
     @Override
-    public Persona consultar(Integer id) {  // ✅ Asegurado que id es Integer
+    public Persona consultar(Integer id) {
         String sql = "SELECT * FROM Persona WHERE ID = ?";
         try (Connection con = Conexion.getInstance().getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
-            ps.setInt(1, id);  // ✅ Usa setInt porque id es Integer
+            ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return new Persona(
-                            rs.getInt("ID"),  // ✅ Corregido para obtener un Integer
+                    return  Persona persona = personaFabrica.crearPersona( //new persona
+                            rs.getInt("ID"),
                             rs.getString("nombres"),
                             rs.getString("apellidos"),
                             rs.getString("email")
@@ -94,7 +94,7 @@ public class PersonaDao implements Repositorio<Persona> {
              ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
-                lista.add(new Persona(
+                lista.add(Persona persona = personaFabrica.crearPersona(
                         rs.getInt("ID"),  // ✅ Asegurado que es Integer
                         rs.getString("nombres"),
                         rs.getString("apellidos"),

@@ -6,6 +6,7 @@ import modelos.Programa;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import Fabrica.CursoFabrica;
 
 public class CursoDao {
 
@@ -14,6 +15,12 @@ public class CursoDao {
     private static final String UPDATE = "UPDATE Curso SET nombre = ?, programa_id = ?, activo = ? WHERE id = ?";
     private static final String DELETE = "DELETE FROM Curso WHERE id = ?";
     private static final String SELECT_ALL = "SELECT * FROM Curso";
+
+    private final CursoFabrica cursoFabrica;
+
+    public CursoDao() {
+        this.cursoFabrica = new CursoFabrica();
+    }
 
     public boolean crearCurso(Curso curso) {
         try (Connection con = Conexion.getInstance().getConnection();
@@ -43,8 +50,7 @@ public class CursoDao {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    Programa prog = new ProgramaDao().consultarPrograma(rs.getInt("programa_id"));
-                    curso = new Curso(
+                   Curso curso = cursoFabrica.crearCurso(
                             rs.getInt("id"),
                             rs.getString("nombre"),
                             prog,
@@ -97,7 +103,7 @@ public class CursoDao {
 
             while (rs.next()) {
                 Programa prog = new ProgramaDao().consultarPrograma(rs.getInt("programa_id"));
-                Curso curso = new Curso(
+                Curso curso = cursoFabrica.crearCurso(
                         rs.getInt("id"),
                         rs.getString("nombre"),
                         prog,
