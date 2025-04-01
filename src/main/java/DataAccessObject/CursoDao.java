@@ -50,7 +50,8 @@ public class CursoDao {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                   Curso curso = cursoFabrica.crearCurso(
+                   Programa prog = new ProgramaDao().consultarPrograma(rs.getInt("programa_id"));
+                   cursoFabrica.crearCurso(
                             rs.getInt("id"),
                             rs.getString("nombre"),
                             prog,

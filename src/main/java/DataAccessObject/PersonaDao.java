@@ -6,10 +6,16 @@ import modelos.Persona;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import Fabrica.PersonaFabrica;
 
 public class PersonaDao implements Repositorio<Persona> {
 
-    @Override
+    private final PersonaFabrica personaFabrica;
+    //@Override
+    
+    public PersonaDao(){
+        personaFabrica = new PersonaFabrica();
+    }
     public boolean agregar(Persona persona) {
         String sql = "INSERT INTO Persona (ID, nombres, apellidos, email) VALUES (?, ?, ?, ?)";
         try (Connection con = Conexion.getInstance().getConnection();
@@ -36,7 +42,7 @@ public class PersonaDao implements Repositorio<Persona> {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return  Persona persona = personaFabrica.crearPersona( //new persona
+                    return  personaFabrica.crearPersona( //new persona
                             rs.getInt("ID"),
                             rs.getString("nombres"),
                             rs.getString("apellidos"),
@@ -94,7 +100,7 @@ public class PersonaDao implements Repositorio<Persona> {
              ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
-                lista.add(Persona persona = personaFabrica.crearPersona(
+                lista.add(personaFabrica.crearPersona(
                         rs.getInt("ID"),  // ✅ Asegurado que es Integer
                         rs.getString("nombres"),
                         rs.getString("apellidos"),

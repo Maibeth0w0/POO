@@ -1,5 +1,6 @@
 package Fabrica;
 
+import modelos.Programa;
 import modelos.Estudiante;
 
 public class EstudianteFabrica {
@@ -7,3 +8,4 @@ public class EstudianteFabrica {
         return new Estudiante(codigo, programa, activo, promedio, id, nombres, apellidos, email);
     }
 }
+

@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
+
 public class VistaPrincipal extends JFrame {
 
     private final ControllerPersona controllerPersona;
@@ -51,28 +52,28 @@ public class VistaPrincipal extends JFrame {
 
         // Acciones: al pulsar se abre la ventana correspondiente
         btnAbrirCrudFacultad.addActionListener((ActionEvent e) -> {
-            new CrudFacultad().setVisible(true);
+            new Vistas.CrudFacultad().setVisible(true);
             // Opcional: this.dispose();
         });
         btnAbrirCrudCurso.addActionListener((ActionEvent e) -> {
-            new CrudCurso().setVisible(true);
+            new Vistas.CrudCurso().setVisible(true);
             // Opcional: this.dispose();
         });
         btnAbrirCrudPrograma.addActionListener((ActionEvent e) -> {
-            new CrudPrograma().setVisible(true);
+            new Vistas.CrudPrograma().setVisible(true);
             // Opcional: this.dispose();
         });
         btnAbrirCrudEstudiante.addActionListener((ActionEvent e) -> {
-            new CrudEstudiante().setVisible(true);
+            new Vistas.CrudEstudiante().setVisible(true);
         });
         btnAbrirCrudProfesor.addActionListener((ActionEvent e) -> {
-            new CrudProfesor().setVisible(true);
+            new Vistas.CrudProfesor().setVisible(true);
         });
         btnAbrirCrudInscripcion.addActionListener((ActionEvent e) -> {
-            new CrudInscripcion().setVisible(true);
+            new Vistas.CrudInscripcion().setVisible(true);
         });
         btnListarFacultad.addActionListener((ActionEvent e) -> {
-            new MostrarFacultadesConProgramas().setVisible(true);
+            new Vistas.MostrarFacultadesConProgramas().setVisible(true);
         });
 
 
