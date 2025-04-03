@@ -5,15 +5,18 @@ import DataAccessObject.ProfesorDao;
 import modelos.Profesor;
 import modelos.Persona;
 import java.util.List;
+import Fabrica.ProfesorFabrica;
 
 public class ProfesorServicio {
 
     private final ProfesorDao profesorDao;
     private final PersonaDao personaDao;
+    private final ProfesorFabrica profesorFabrica;
 
     public ProfesorServicio() {
         this.personaDao = new PersonaDao();
         this.profesorDao = new ProfesorDao();
+        this.profesorFabrica = new ProfesorFabrica();
     }
 
     public boolean agregarProfesor(Integer id, Integer idPersona, String tipoContrato) {
@@ -24,7 +27,7 @@ public class ProfesorServicio {
             return false;
         }
 
-        Profesor profesor = new Profesor(id, tipoContrato, persona.getId(), persona.getNombres(), persona.getApellidos(), persona.getEmail());
+        Profesor profesor = profesorFabrica.crearProfesor(id, tipoContrato, persona.getId(), persona.getNombres(), persona.getApellidos(), persona.getEmail());
         return profesorDao.agregarProfesor(profesor);
     }
 
@@ -41,7 +44,7 @@ public class ProfesorServicio {
             return false;
         }
 
-        Profesor profesor = new Profesor( id, tipoContrato, persona.getId(), persona.getNombres(), persona.getApellidos(), persona.getEmail());
+        Profesor profesor = profesorFabrica.crearProfesor( id, tipoContrato, persona.getId(), persona.getNombres(), persona.getApellidos(), persona.getEmail());
         return profesorDao.actualizarProfesor(profesor);
 
     }

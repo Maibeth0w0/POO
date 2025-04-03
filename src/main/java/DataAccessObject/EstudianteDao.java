@@ -7,8 +7,15 @@ import modelos.Programa;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import Fabrica.EstudianteFabrica;
 
 public class EstudianteDao {
+    
+    private final EstudianteFabrica estudianteFabrica;
+
+    public EstudianteDao() {
+        this.estudianteFabrica = new EstudianteFabrica();
+    }
 
     public void agregar(Estudiante estudiante) {
         String sql = "INSERT INTO Estudiante (codigo, id_persona, programa_id, activo, promedio) VALUES (?, ?, ?, ?, ?)";
@@ -36,7 +43,7 @@ public class EstudianteDao {
             stmt.setInt(1, codigo);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    return new Estudiante(
+                    return estudianteFabrica.crearEstudiante(
                             rs.getInt("codigo"),
                             new Programa(rs.getInt("programa_id"), "", 0.0, "", null),
                             rs.getBoolean("activo"),
@@ -93,7 +100,7 @@ public class EstudianteDao {
              ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
-                estudiantes.add(new Estudiante(
+                estudiantes.add(estudianteFabrica.crearEstudiante(
                         rs.getInt("codigo"),
                         new Programa(rs.getInt("programa_id"), "", 0.0, "", null),
                         rs.getBoolean("activo"),

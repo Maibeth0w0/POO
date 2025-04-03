@@ -5,10 +5,11 @@ import modelos.Profesor;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import Fabrica.ProfesorFabrica;
+
 
 public class ProfesorDao {
-
-    // Sentencias SQL para insertar, actualizar, consultar, eliminar y listar
+       
     private static final String INSERT_PERSONA = "INSERT INTO Persona (id, nombres, apellidos, email) VALUES (?, ?, ?, ?)";
     private static final String INSERT_PROFESOR = "INSERT INTO Profesor (id, persona_id, tipoContrato) VALUES (?, ?, ?)";
     private static final String SELECT_BY_ID = "SELECT p.id AS persona_id, p.nombres, p.apellidos, p.email, pr.id AS profesor_id, pr.tipoContrato " +
@@ -19,8 +20,13 @@ public class ProfesorDao {
     private static final String DELETE_PERSONA = "DELETE FROM Persona WHERE id = ?";
     private static final String SELECT_ALL = "SELECT p.id AS persona_id, p.nombres, p.apellidos, p.email, pr.id AS profesor_id, pr.tipoContrato " +
             "FROM Persona p INNER JOIN Profesor pr ON p.id = pr.persona_id";
+    private final ProfesorFabrica profesorFabrica;
 
-    // Método para agregar un profesor:
+    public ProfesorDao(){
+        this.profesorFabrica = new ProfesorFabrica();
+    }
+    
+        
     // Se inserta en Persona (solo si no existe) y luego en Profesor, utilizando transacciones.
     public boolean agregarProfesor(Profesor profesor) {
         try (Connection con = Conexion.getInstance().getConnection()) {
@@ -62,7 +68,7 @@ public class ProfesorDao {
             ps.setInt(1, profesorId);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    profesor = new Profesor(
+                    profesor = profesorFabrica.crearProfesor(
                             rs.getInt("profesor_id"),          // id propio de Profesor
                             rs.getString("tipoContrato"),
                             rs.getInt("persona_id"),           // id de Persona
@@ -148,7 +154,7 @@ public class ProfesorDao {
              PreparedStatement ps = con.prepareStatement(SELECT_ALL);
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
-                Profesor profesor = new Profesor(
+                Profesor profesor = profesorFabrica.crearProfesor(
                         rs.getInt("profesor_id"),
                         rs.getString("tipoContrato"),
                         rs.getInt("persona_id"),

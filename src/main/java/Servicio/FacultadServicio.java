@@ -11,6 +11,7 @@ import java.sql.SQLOutput;
 import java.util.List;
 import modelos.Facultad;
 import modelos.Persona;
+import Fabrica.FacultadFabrica;
 
 /**
  *
@@ -21,11 +22,13 @@ public class FacultadServicio {
     private final FacultadDao facultadDao;
     private final InscripcionFacultad inscribir;
     private final PersonaDao personaDao;
+     private final FacultadFabrica facultadFabrica;
 
     public FacultadServicio() {
         this.personaDao = new PersonaDao();
         this.facultadDao = new FacultadDao();
         this.inscribir = new InscripcionFacultad();
+        this.facultadFabrica = new FacultadFabrica();
     }
     
     public void inscribirFacultad(Integer id, String nombre, Integer idDecano){
@@ -33,7 +36,9 @@ public class FacultadServicio {
             Persona personaDecano = personaDao.consultar(idDecano);
             
             if(personaDecano != null){
-                Facultad facultad = new Facultad();
+                
+                Facultad facultad = facultadFabrica.crearFacultad(id, nombre, personaDecano);
+                //Facultad facultad = new Facultad();
                 facultad.setId(id);
                 facultad.setNombre(nombre);
                 facultad.setDecano(personaDecano);
@@ -57,7 +62,8 @@ public class FacultadServicio {
                 
         if(personaDecano != null){
         
-            Facultad facultad = new Facultad();
+            Facultad facultad = facultadFabrica.crearFacultad(id, nombre, personaDecano);
+            //Facultad facultad = new Facultad();
             facultad.setId(id);
             facultad.setNombre(nombre);
             facultad.setDecano(personaDecano);
@@ -91,7 +97,8 @@ public class FacultadServicio {
             
             if(personaDecano != null){
                 
-                Facultad facultad = new Facultad();
+                Facultad facultad = facultadFabrica.crearFacultad(id, nombre, personaDecano);
+                //Facultad facultad = new Facultad();
                 facultad.setId(id);
                 facultad.setNombre(nombre);
                 facultad.setDecano(personaDecano);

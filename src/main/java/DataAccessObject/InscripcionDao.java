@@ -7,6 +7,8 @@ import modelos.Estudiante;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import Fabrica.InscripcionFabrica;
+
 
 public class InscripcionDao {
 
@@ -15,6 +17,11 @@ public class InscripcionDao {
     private static final String UPDATE = "UPDATE Inscripcion SET anno = ?, semestre = ? WHERE id_inscripcion = ?";
     private static final String DELETE = "DELETE FROM Inscripcion WHERE id_inscripcion = ?";
     private static final String SELECT_ALL = "SELECT * FROM Inscripcion";
+    private final InscripcionFabrica inscripcionFabrica;
+    
+     public InscripcionDao() {
+        this.inscripcionFabrica = new InscripcionFabrica();
+    }
 
     public void agregar(Inscripcion inscripcion) {
         String sql = INSERT;
@@ -55,7 +62,7 @@ public class InscripcionDao {
                     Curso cursoReal = new CursoDao().consultarCurso(idCurso);
                     Estudiante estudianteReal = new EstudianteDao().consultar(codigoEst);
 
-                    return new Inscripcion(
+                    return inscripcionFabrica.crearInscripcion(
                             rs.getInt("id_inscripcion"),
                             cursoReal,
                             rs.getInt("anno"),
@@ -119,7 +126,7 @@ public class InscripcionDao {
                 Curso cursoReal = new CursoDao().consultarCurso(idCurso);
                 Estudiante estudianteReal = new EstudianteDao().consultar(codigoEst);
 
-                inscripciones.add(new Inscripcion(
+                inscripciones.add(inscripcionFabrica.crearInscripcion(
                         idIns,
                         cursoReal,
                         anno,

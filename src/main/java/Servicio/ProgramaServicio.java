@@ -9,6 +9,7 @@ import DataAccessObject.ProgramaDao;
 import java.util.List;
 import modelos.Facultad;
 import modelos.Programa;
+import Fabrica.ProgramaFabrica;
 
 /**
  *
@@ -19,16 +20,18 @@ public class ProgramaServicio {
     private final ProgramaDao programaDao;
     private final InscribirPrograma inscribir;
     private final FacultadDao facultadDao;
+    private final ProgramaFabrica programaFabrica;
     
     public ProgramaServicio(){
         this.programaDao = new ProgramaDao();
         this.inscribir = new InscribirPrograma();
         this.facultadDao = new FacultadDao();
+        this.programaFabrica = new ProgramaFabrica();
         
     }
     
     public void inscribirPrograma(Integer id, String nombre, Double duracion, String registro, Facultad facultad){
-        Programa programa = new Programa();
+        Programa programa = programaFabrica.crearprograma(id, nombre, duracion, registro, facultad);
             programa.setId(id);
             programa.setNombre(nombre);
             programa.setDuracion(duracion);
@@ -58,7 +61,7 @@ public class ProgramaServicio {
             return false;
         }
 
-        Programa programa = new Programa(id, nombre, duracion, registro, facultad);
+        Programa programa = programaFabrica.crearprograma(id, nombre, duracion, registro, facultad);
         return programaDao.agregarPrograma(programa);
     }
 
@@ -72,7 +75,7 @@ public class ProgramaServicio {
             return;
         }
          
-        Programa programa = new Programa();
+        Programa programa = programaFabrica.crearprograma(id, nombre, duracion, registro, facultad);
         programa.setId(id);
         programa.setNombre(nombre);
         programa.setDuracion(duracion);

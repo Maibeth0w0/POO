@@ -7,8 +7,15 @@ import modelos.Persona;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import Fabrica.FacultadFabrica;
 
 public class FacultadDao implements Repositorio<Facultad> {
+    
+     private final FacultadFabrica facultadFabrica;
+
+    public FacultadDao() {
+        this.facultadFabrica = new FacultadFabrica();
+    }
 
     @Override
     public boolean agregar(Facultad facultad) {
@@ -42,7 +49,11 @@ public class FacultadDao implements Repositorio<Facultad> {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    facultad = new Facultad(rs.getInt("id"), rs.getString("nombre"), null);
+                    facultad = facultadFabrica.crearFacultad(
+                            rs.getInt("id"), 
+                            rs.getString("nombre"), 
+                            null
+                    );
                 }
             }
         } catch (SQLException e) {

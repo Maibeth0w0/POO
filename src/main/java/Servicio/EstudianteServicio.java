@@ -6,6 +6,7 @@ import DataAccessObject.ProgramaDao;
 import modelos.Estudiante;
 import modelos.Persona;
 import modelos.Programa;
+import Fabrica.EstudianteFabrica;
 
 import java.util.List;
 
@@ -14,11 +15,13 @@ public class EstudianteServicio {
     private EstudianteDao estudianteDao;
     private PersonaDao personaDao;
     private ProgramaDao programaDao;
+    private EstudianteFabrica estudianteFabrica;
 
     public EstudianteServicio() {
         this.estudianteDao = new EstudianteDao();
         this.personaDao = new PersonaDao();
         this.programaDao = new ProgramaDao();
+        this.estudianteFabrica = new EstudianteFabrica();
     }
 
     public boolean agregarEstudiante(Integer codigo, Integer idPersona, Integer idPrograma, double promedio, boolean activo) {
@@ -26,8 +29,9 @@ public class EstudianteServicio {
         Persona persona = personaDao.consultar(idPersona);
 
         Programa programa = programaDao.consultarPrograma(idPrograma);
-
-        Estudiante estudiante = new Estudiante(codigo, programa, activo, promedio, persona.getId(), persona.getNombres(), persona.getApellidos(), persona.getEmail());
+        
+        Estudiante estudiante = estudianteFabrica.crearEstudiante(codigo, programa, activo, promedio, persona.getId(), persona.getNombres(), persona.getApellidos(), persona.getEmail());
+       
         try {
             estudianteDao.agregar(estudiante);
             return true;
@@ -50,7 +54,7 @@ public class EstudianteServicio {
         Persona persona = personaDao.consultar(idPersona);
         Programa programa = programaDao.consultarPrograma(idPrograma);
 
-        Estudiante estudiante = new Estudiante(codigo, programa, activo, promedio, persona.getId(), persona.getNombres(), persona.getApellidos(), persona.getEmail());
+         Estudiante estudiante = estudianteFabrica.crearEstudiante(codigo, programa, activo, promedio, persona.getId(), persona.getNombres(), persona.getApellidos(), persona.getEmail());
 
         try {
             estudianteDao.actualizar(estudiante);

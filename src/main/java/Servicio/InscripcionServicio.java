@@ -6,6 +6,7 @@ import DataAccessObject.InscripcionDao;
 import modelos.Curso;
 import modelos.Estudiante;
 import modelos.Inscripcion;
+import Fabrica.InscripcionFabrica;
 
 import java.util.List;
 
@@ -13,11 +14,13 @@ public class InscripcionServicio {
     private InscripcionDao inscripcionDao;
     private EstudianteDao estudianteDao;
     private CursoDao cursoDao;
+    private InscripcionFabrica inscripcionFabrica;
 
     public InscripcionServicio() {
         this.inscripcionDao = new InscripcionDao();
         this.estudianteDao = new EstudianteDao();
         this.cursoDao = new CursoDao();
+        this.inscripcionFabrica = new InscripcionFabrica();
     }
 
     // Agregar una inscripción con validaciones
@@ -33,7 +36,7 @@ public class InscripcionServicio {
         }
 
         // Se crea la inscripción con el idInscripcion como PK
-        Inscripcion inscripcion = new Inscripcion(idInscripcion, curso, anno, semestre, estudiante);
+        Inscripcion inscripcion = inscripcionFabrica.crearInscripcion(idInscripcion, curso, anno, semestre, estudiante);
 
         if (inscripcion.getIdInscripcion() != null &&
                 inscripcion.getCurso() != null &&
@@ -65,7 +68,7 @@ public class InscripcionServicio {
             return;
         }
 
-        Inscripcion inscripcion = new Inscripcion(idInscripcion, curso, anno, semestre, estudiante);
+        Inscripcion inscripcion = inscripcionFabrica.crearInscripcion(idInscripcion, curso, anno, semestre, estudiante);
 
         if (inscripcion.getIdInscripcion() != null) {
             inscripcionDao.actualizar(inscripcion);
